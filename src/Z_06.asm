@@ -435,6 +435,24 @@ CommonDataBlock_Bank6:
 
 .SEGMENT "BANK_06_DATA"
 
+; Imports from program bank 05
+
+.IMPORT ColumnHeapOW0
+.IMPORT ColumnHeapOW1
+.IMPORT ColumnHeapOW2
+.IMPORT ColumnHeapOW3
+.IMPORT ColumnHeapOW4
+.IMPORT ColumnHeapOW5
+.IMPORT ColumnHeapOW6
+.IMPORT ColumnHeapOW7
+.IMPORT ColumnHeapOW8
+.IMPORT ColumnHeapOW9
+.IMPORT ColumnHeapOWA
+.IMPORT ColumnHeapOWB
+.IMPORT ColumnHeapOWC
+.IMPORT ColumnHeapOWD
+.IMPORT ColumnHeapOWE
+.IMPORT ColumnHeapOWF
 
 .EXPORT ColumnDirectoryOW
 .EXPORT LevelNumberTransferBuf
@@ -458,10 +476,10 @@ LevelNumberTransferBuf:
     .BYTE $62, $00, $FF
 
 ColumnDirectoryOW:
-    .BYTE $D8, $9B, $0D, $9C, $3E, $9C, $80, $9C
-    .BYTE $C4, $9C, $F6, $9C, $32, $9D, $6D, $9D
-    .BYTE $A8, $9D, $E6, $9D, $27, $9E, $6C, $9E
-    .BYTE $A9, $9E, $DF, $9E, $21, $9F, $55, $9F
+    .ADDR ColumnHeapOW0, ColumnHeapOW1, ColumnHeapOW2, ColumnHeapOW3
+    .ADDR ColumnHeapOW4, ColumnHeapOW5, ColumnHeapOW6, ColumnHeapOW7
+    .ADDR ColumnHeapOW8, ColumnHeapOW9, ColumnHeapOWA, ColumnHeapOWB
+    .ADDR ColumnHeapOWC, ColumnHeapOWD, ColumnHeapOWE, ColumnHeapOWF
 
 TriforceRow0TransferBuf:
     .BYTE $2A, $EE, $04, $ED, $E9, $EA, $EE, $FF
