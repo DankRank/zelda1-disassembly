@@ -21,7 +21,8 @@ objs=""
 for src in src/*asm; do
 	echo "Assembling $src"
 	obj="obj/$(basename "$src" .asm).o"
-	ca65 "$src" -o "$obj" --bin-include-dir bin
+	lst="obj/$(basename "$src" .asm).lst"
+	ca65 "$src" -o "$obj" -l "$lst" --bin-include-dir bin
 	objs="$objs $obj"
 done
 echo "Linking"
