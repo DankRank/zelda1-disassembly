@@ -303,6 +303,7 @@
 .EXPORT Link_EndMoveAndDraw_Bank4
 .EXPORT MarkRoomVisited
 .EXPORT MoveObject
+.EXPORT IsrNmi
 .EXPORT Obj_Shove
 .EXPORT PatchAndCueLevelPalettesTransferAndAdvanceSubmode
 .EXPORT PlayAreaColumnAddrs
@@ -316,6 +317,7 @@
 .EXPORT RunCrossRoomTasksAndBeginUpdateMode
 .EXPORT RunCrossRoomTasksAndBeginUpdateMode_EnterPlayModes
 .EXPORT RunCrossRoomTasksAndBeginUpdateMode_PlayModesNoCellar
+.EXPORT RunGame
 .EXPORT SaveSlotToPaletteRowOffset
 .EXPORT SetShoveInfoWith0
 .EXPORT SetTypeAndClearObject
@@ -5943,81 +5945,21 @@ AnimatePond:
     JMP CueTransferPondPaletteRow
 
 .SEGMENT "BANK_07_ISR"
-
-
-.EXPORT IsrReset
-
-
-IsrReset:
-    SEI                         ; Disable interrupts.
-    CLD                         ; Clear decimal mode.
-    LDA #$00
-    STA PpuControl_2000         ; Set the PPU to a base state with no NMI.
-    LDX #$FF
-    TXS                         ; Set the stack to $01FF.
-:
-    LDA PpuStatus_2002          ; Wait for one VBLANK.
-    AND #$80
-    BEQ :-
-:
-    LDA PpuStatus_2002          ; Wait for another VBLANK.
-    AND #$80                    ;   in case the first was left over from a previous run.
-    BEQ :-
-    ORA #$FF
-    STA $8000                   ; Reset all MMC1 shift registers.
-    STA $A000
-    STA $C000
-    STA $E000
-    LDA #$0F                    ; Set our normal mirroring and PRG ROM bank mode.
-    JSR SetMMC1Control
-    LDA #$00                    ; Use CHR RAM bank 0 for PPU address $00000.
-    STA $A000
-    LSR
-    STA $A000
-    LSR
-    STA $A000
-    LSR
-    STA $A000
-    LSR
-    STA $A000
-    LDA #$07
-    JSR SwitchBank
-    JMP RunGame
-
-SetMMC1Control:
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    RTS
-
-SwitchBank:
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    RTS
+.EXPORT IsrReset_Local7 := IsrReset
+.INCLUDE "Reset.inc"
 
 .SEGMENT "BANK_07_VEC"
 
-
-
-
-; Unknown block
-    .BYTE $5A, $45, $4C, $44, $41, $D7, $C8, $00
-    .BYTE $00, $38, $04, $01, $04, $01, $BE
+    ; Nintendo header
+    .BYTE "ZELDA" ; Title
+    .WORD $C8D7   ; PRG Checksum
+    .WORD $0000   ; CHR Checksum
+    .BYTE $38     ; PRG: 128K ROM, CHR: 8K RAM
+    .BYTE $04     ; Mapper: MMC
+    .BYTE $01     ; Title encoding: ASCII
+    .BYTE $04     ; Title length minus one
+    .BYTE $01     ; Publisher: Nintendo
+    .BYTE <-($00+$00+$38+$04+$01+04+$01) ; Checksum
 
 IsrVector:
-    .ADDR IsrNmi
-    .ADDR IsrReset
-    .ADDR $FFF0
+    .ADDR IsrNmi, IsrReset, *&$FFF0

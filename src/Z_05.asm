@@ -72,7 +72,7 @@
 .IMPORT GetUniqueRoomId
 .IMPORT GoToNextModeFromPlay
 .IMPORT HideAllSprites
-.IMPORT IsrReset
+.IMPORT IsrReset_Local7
 .IMPORT LevelMasks
 .IMPORT Link_EndMoveAndAnimate
 .IMPORT Link_EndMoveAndAnimateBetweenRooms
@@ -1389,7 +1389,7 @@ InitModeD:
     BCS :+
     JMP BeginUpdateMode
 :
-    JMP IsrReset
+    JMP IsrReset_Local7
 
 InitMode10:
     LDX #$00                    ; Get the tile the player is standing on (on the hotspot).
@@ -8283,51 +8283,10 @@ CreateRoomObjects:
     RTS
 
 .SEGMENT "BANK_05_ISR"
-
-
-.EXPORT SetMMC1Control_Local5
-.EXPORT SwitchBank_Local5
-
-
-; Unknown block
-    .BYTE $78, $D8, $A9, $00, $8D, $00, $20, $A2
-    .BYTE $FF, $9A, $AD, $02, $20, $29, $80, $F0
-    .BYTE $F9, $AD, $02, $20, $29, $80, $F0, $F9
-    .BYTE $09, $FF, $8D, $00, $80, $8D, $00, $A0
-    .BYTE $8D, $00, $C0, $8D, $00, $E0, $A9, $0F
-    .BYTE $20, $98, $BF, $A9, $00, $8D, $00, $A0
-    .BYTE $4A, $8D, $00, $A0, $4A, $8D, $00, $A0
-    .BYTE $4A, $8D, $00, $A0, $4A, $8D, $00, $A0
-    .BYTE $A9, $07, $20, $AC, $BF, $4C, $40, $E4
-
-SetMMC1Control_Local5:
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    LSR
-    STA $8000
-    RTS
-
-SwitchBank_Local5:
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    LSR
-    STA $E000
-    RTS
+.EXPORT SetMMC1Control_Local5 := SetMMC1Control
+.EXPORT SwitchBank_Local5 := SwitchBank
+.INCLUDE "Reset.inc"
 
 .SEGMENT "BANK_05_VEC"
-
-
-
-
-; Unknown block
-    .BYTE $84, $E4, $50, $BF, $F0, $BF
+.IMPORT IsrNmi
+    .ADDR IsrNmi, IsrReset, *&$FFF0
