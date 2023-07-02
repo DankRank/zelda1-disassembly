@@ -415,7 +415,13 @@ TuneScripts1:
     .BYTE $4A, $5A, $02, $4C, $5A, $56, $02, $50
     .BYTE $4C, $5A, $02, $54, $5A, $58, $02, $50
     .BYTE $54, $4C, $42, $02, $4C, $50, $48, $4A
-    .BYTE $50, $00, $8A, $08, $08, $08, $85, $3C
+    .BYTE $50, $00
+.IFNDEF REV1
+    .BYTE $8A, $08, $08
+.ELSE
+    .BYTE $9E
+.ENDIF
+    .BYTE $08, $85, $3C
     .BYTE $3A, $38, $36, $3A, $38, $36, $34, $38
     .BYTE $36, $34, $32, $36, $34, $32, $30, $34
     .BYTE $32, $30, $2E, $2A, $28, $A8, $26, $00
@@ -521,9 +527,14 @@ DriveSample:
     DEC SampleCounter
     BNE @Exit
     LDA Sample
+.IFNDEF REV1
     BMI @ChangeSampleMid
     AND #$70
     BNE @ChangeSampleLow
+.ELSE
+    AND #$70
+    BNE :+
+.ENDIF
     LDA #$00
     STA Sample
     LDA #$0F
@@ -541,8 +552,13 @@ DriveSample:
     BEQ :+
 
 @ChangeSampleMid:
+.IFNDEF REV1
     LDX #$7F
     AND #$F0
+.ELSE
+    LDX #$40
+    AND #$70
+.ENDIF
 :
     STX DmcCounter_4011
     STA Sample
@@ -1106,11 +1122,8 @@ GetSongNoteLengthWithAbsIndex:
 StairsSfxNotes:
     .BYTE $0E, $0E, $4C, $6D, $8C, $CD
 
-; Unknown block
-    .BYTE $FF
-
 ; Big-endian 16-bit period values.
-;
+    .ALIGN 16   ; FIXME: actually it's page aligned
 NotePeriodTable:
     .BYTE $00, $23, $00, $6A, $03, $27, $00, $97
     .BYTE $00, $00, $02, $F9, $02, $CF, $02, $A6

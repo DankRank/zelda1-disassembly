@@ -2197,11 +2197,19 @@ TriggerOpenDoor:
 :
     RTS
 
+.IFNDEF REV1
 Mode8BaseSpriteValues:
     .BYTE $F3, $02, $40
 
 Mode8SpriteYs:
     .BYTE $4F, $67, $7F
+.ELSE
+Mode8BaseSpriteValues:
+    .BYTE $F3, $02, $50
+
+Mode8SpriteYs:
+    .BYTE $27, $37, $47
+.ENDIF
 
 Mode8SelectionToMode:
     .BYTE $03, $0D, $00
@@ -2209,8 +2217,16 @@ Mode8SelectionToMode:
 Mode8FlashTransferRecord:
     .BYTE $23, $D2, $43, $00, $FF
 
+.IFNDEF REV1
 Mode8FlashAttrsAddrLo:
     .BYTE $D2, $DA, $E2
+.ELSE
+Mode8FlashAttrsAddrLo:
+    .BYTE $CB, $CB, $D3
+
+Mode8FlashAttrs:
+    .BYTE $05, $50, $55
+.ENDIF
 
 UpdateMode8ContinueQuestion_Full:
     LDA GameSubmode
@@ -2287,7 +2303,15 @@ UpdateMode8ContinueQuestion_Full:
     LDA ObjTimer+1
     AND #$04
     BEQ :+
+.IFNDEF REV1
     LDY #$55
+.ELSE
+    LDA GameSubmode
+    AND #03
+    TAY
+    LDA Mode8FlashAttrs, Y
+    TAY
+.ENDIF
 :
     STY DynTileBuf+3
     RTS
@@ -4182,8 +4206,11 @@ CheckBossSoundEffectUW:
     .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
     .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
     .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+    .BYTE $FF, $FF, $FF, $FF
+.IFNDEF REV1
     .BYTE $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
-    .BYTE $FF, $FF, $FF, $FF, $FF, $FF
+    .BYTE $FF, $FF
+.ENDIF
 
 ; Params:
 ; [02:03]: address of door tiles for direction and face

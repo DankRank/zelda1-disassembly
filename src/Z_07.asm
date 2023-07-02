@@ -5952,7 +5952,11 @@ AnimatePond:
 
     ; Nintendo header
     .BYTE "ZELDA" ; Title
+.IFNDEF REV1
     .WORD $C8D7   ; PRG Checksum
+.ELSE
+    .WORD $76E0   ; PRG Checksum
+.ENDIF
     .WORD $0000   ; CHR Checksum
     .BYTE $38     ; PRG: 128K ROM, CHR: 8K RAM
     .BYTE $04     ; Mapper: MMC
