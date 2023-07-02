@@ -2843,12 +2843,10 @@ World_ChangeRupees:
 
     ; Reset RupeesToAdd or RupeesToSubtract as appropriate,
     ; if reached 0 or max.
-    ;
-    ; Index of RupeesToSubtract item slot.
-    LDY #$27
+    LDY #RupeesToSubtract-Items ; Index of RupeesToSubtract item slot.
     LDA InvRupees
     BEQ @ResetSlot
-    LDY #$26                    ; Index of RupeesToAdd item slot.
+    LDY #RupeesToAdd-Items      ; Index of RupeesToAdd item slot.
     CMP #$FF
     BNE :+                      ; If 0 < rupees < $FF, don't reset anything.
 

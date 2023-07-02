@@ -5790,7 +5790,7 @@ LayoutRoomOW:
     LDA #$00                    ; Reset [06] for use in multiplication below.
     STA $06
     LDX RoomId                  ; Get unique room ID (OW).
-    LDA LevelBlockAttrsD, X     ; The low 6 bits have the unique room ID.
+    LDA LevelBlockAttrsD, X     ; The low 7 bits have the unique room ID.
 
     ; Add ((unique room ID) * $10) to address in [$02:03]. Each unique room has $10 columns.
     ASL
