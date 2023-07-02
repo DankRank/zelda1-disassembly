@@ -3748,11 +3748,13 @@ CreditsPagesTextMasks:
     .BYTE $46, $10, $90, $84, $24, $30, $01, $48
     .BYTE $03, $25, $05, $40
 
+    .INCLUDE "dat/CreditsTextAddrs.inc"
+
 CreditsTextAddrsLo:
-    .INCLUDE "dat/CreditsTextAddrsLo.inc"
+    .LOBYTES CreditsTextAddrs
 
 CreditsTextAddrsHi:
-    .INCLUDE "dat/CreditsTextAddrsHi.inc"
+    .HIBYTES CreditsTextAddrs
 
 CreditsTextLines:
     .INCBIN "dat/CreditsTextLines.dat"
