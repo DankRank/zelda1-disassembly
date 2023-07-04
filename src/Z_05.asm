@@ -5614,8 +5614,13 @@ UpdateMode12EndLevel_Sub1:
     LDY #$18
     LDA ObjTimer
     BEQ StartFillingHearts
+.IFNDEF ZELDAVC
     AND #$07                    ; Every 4 frames, switch palettes.
     CMP #$04
+.ELSE
+    AND #$0F                    ; Every 8 frames, switch palettes.
+    CMP #$08
+.ENDIF
     BCC :+
     LDY #$78                    ; WhitePaletteBottomHalfTransferBuf
 :

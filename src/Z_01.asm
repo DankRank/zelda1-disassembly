@@ -2080,8 +2080,14 @@ CheckPowerTriforceFanfare:
     ; Redundant check of Link's timer that won't branch.
     LDA ObjTimer
     BEQ @FillHearts
-    AND #$07
+.IFNDEF ZELDACE
+    AND #$07                    ; Every 4 frames, switch palettes.
     CMP #$04
+.ELSE
+.IMPORT CheckPowerTriforceFanfarePatch
+    JSR CheckPowerTriforceFanfarePatch
+    NOP
+.ENDIF
     BCC :+
     LDY #$78
 :

@@ -44,6 +44,7 @@
   <Binary Offset='104932' Length='252' FileName='dat/LevelInfoUW7.dat'/>
   <Binary Offset='105184' Length='252' FileName='dat/LevelInfoUW8.dat'/>
   <Binary Offset='105436' Length='252' FileName='dat/LevelInfoUW9.dat'/>
+  <Binary Offset='107188' Length='31' FileName='dat/Mode8TextTileBuffer.dat' Rev1Length='170'/>
   <Binary Offset='107518' Length='1131' FileName='dat/StoryTileAttrTransferBuf.dat' Rev1Offset='107657'/>
   <Binary Offset='108649' Length='1121' FileName='dat/GameTitleTransferBuf.dat' Rev1Offset='108788'/>
   <Binary Offset='114688' Length='9216' FileName='dat/PcmSamples.dat'/>

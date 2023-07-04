@@ -33,7 +33,7 @@ function CheckRequirements()
 		throw ($message + "ca65.exe, ld65.exe")
 	}
 
-	if ( !$NoVerify -and !(test-path ext\Original.nes) )
+	if ( !$NoVerify -and !(test-path 'ext\Legend of Zelda, The (USA).nes') )
 	{
 		throw ($message + "Original.nes")
 	}
@@ -41,14 +41,14 @@ function CheckRequirements()
 
 function ExtractBins()
 {
-	$romPath = resolve-path .\ext\Original.nes
+	$romPath = resolve-path '.\ext\Legend of Zelda, The (USA).nes'
 	$binXmlPath = resolve-path .\src\bins.xml
 	$binRootPath = resolve-path .\bin
 
 	$xml = new-object Xml
 	$xml.Load( $binXmlPath )
 
-	$image = [IO.File]::ReadAllBytes( $romPath )
+	$image = [IO.File]::ReadAllBytes( "$romPath" )
 
 	foreach ( $bin in $xml.Binaries.Binary )
 	{
@@ -104,11 +104,11 @@ echo "Linking"
 if ( $LastExitCode -ne 0 ) { exit }
 
 echo "Combining raw ROM with NES header"
-JoinFiles bin\Z.nes -in OriginalNesHeader.bin, bin\Z.bin
+JoinFiles bin\Z.nes -in NTSCHeader.bin, bin\Z.bin
 
 if ( !$NoVerify )
 {
-	if ( CompareBinaryFiles bin\Z.nes ext\Original.nes )
+	if ( CompareBinaryFiles bin\Z.nes 'ext\Legend of Zelda, The (USA).nes' )
 	{
 		echo "ROM image is OK"
 	}

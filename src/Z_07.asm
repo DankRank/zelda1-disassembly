@@ -5944,9 +5944,41 @@ AnimatePond:
     LDY SecretColorCycle
     JMP CueTransferPondPaletteRow
 
+.IFDEF ZELDACE
+.EXPORT ItemLiftTimerPatch
+    .BYTE $FF, $FF, $FF
+ItemLiftTimerPatch:
+    LDX ItemLiftTimer
+.IFNDEF ZELDAVC
+    CPX #$71                    ; Flash for $C0-$71 = $4F frames
+.ELSE
+    CPX #$45                    ; Flash for $C0-$45 = $7B frames
+.ENDIF
+    BCC :+
+    LDX #$00
+:
+    RTS
+.ENDIF
+
 .SEGMENT "BANK_07_ISR"
 .EXPORT IsrReset_Local7 := IsrReset
 .INCLUDE "Reset.inc"
+.IFDEF ZELDACE
+.EXPORT CheckPowerTriforceFanfarePatch
+CheckPowerTriforceFanfarePatch:
+    BIT ObjTimer                ; Only flash for $80 out of $C0 frames
+    BMI :+
+    LDA #$00
+:
+.IFNDEF ZELDAVC
+    AND #$07                    ; Every 4 frames, switch palettes.
+    CMP #$04
+.ELSE
+    AND #$1F                    ; Every 16 frames, switch palettes.
+    CMP #$10
+.ENDIF
+    RTS
+.ENDIF
 
 .SEGMENT "BANK_07_VEC"
 

@@ -365,7 +365,12 @@ InitialTitleSprites:
     .BYTE $27, $CA, $02, $28, $27, $CC, $02, $30
     .BYTE $57, $CE, $02, $74, $57, $D0, $02, $7C
     .BYTE $31, $D2, $02, $57, $4F, $D2, $02, $CC
-    .BYTE $67, $D2, $02, $7B, $83, $D2, $02, $50
+    .BYTE $67, $D2, $02, $7B
+.IFNDEF ZELDACE
+    .BYTE $83, $D2, $02, $50
+.ELSE
+    .BYTE $81, $D4, $02, $67
+.ENDIF
     .BYTE $31, $D4, $02, $5F, $3F, $D4, $02, $24
     .BYTE $41, $D4, $02, $64, $7B, $D4, $02, $90
     .BYTE $27, $D6, $02, $50, $2B, $D6, $02, $A0
@@ -3425,10 +3430,15 @@ UpdateMode13WinGame_Sub0_Flash:
     JSR DrawLinkZeldaTriforces
 
 @ChangePalette:
+.IFNDEF ZELDACE
     LDX ItemLiftTimer
+.ELSE
+.IMPORT ItemLiftTimerPatch
+    JSR ItemLiftTimerPatch
+.ENDIF
 
     ; Don't flash until $40 frames have passed.
-    CPX #$40
+    CPX #$40                    ; Flash for $C0-$40 = $80 frames
     BCC @Exit
 
     ; Copy the level palette transfer buf.
@@ -3563,13 +3573,22 @@ PeaceTextboxCharAddrsLo:
     .BYTE $56, $57, $58, $59
 
 PeaceText:
+    ; FINALLY,PEACE RETURNS TO HYRULE.
     .BYTE $0F, $12, $17, $0A, $15, $15, $22, $28
     .BYTE $19, $0E, $0A, $0C, $0E, $24, $1B, $0E
     .BYTE $1D, $1E, $1B, $17, $1C, $24, $1D, $18
     .BYTE $24, $11, $22, $1B, $1E, $15, $0E, $2C
+.IFNDEF ZELDACE
+    ; THIS ENDS THE STORY.
     .BYTE $1D, $11, $12, $1C, $24, $0E, $17, $0D
     .BYTE $1C, $24, $1D, $11, $0E, $24, $1C, $1D
     .BYTE $18, $1B, $22, $2C, $FF
+.ELSE
+    ; THE END.
+    .BYTE $24, $24, $24, $24, $24, $24, $1D, $11
+    .BYTE $0E, $24, $0E, $17, $0D, $2C, $24, $24
+    .BYTE $24, $24, $24, $24, $FF
+.ENDIF
 
 UpdatePeaceTextbox:
     ; Only emit a character once every 8 frames --
