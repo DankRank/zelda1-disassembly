@@ -1288,7 +1288,7 @@ WaitAndScrollToSplitBottom:
     ; (multiply instruction timing appropriately) = 1010
     LDY #$03
 :
-    LDX #$30
+    LDX NTSCPAL #$30, #$28
 :
     DEX
     BPL :-
@@ -1314,7 +1314,7 @@ WaitAndScrollToSplitBottom:
 
     ; Scrolling vertically, will set PPUADDR instead of PPUSCROLL.
     ; Wait about 666 cycles.
-    LDY #$5E
+    LDY NTSCPAL #$5E, #$65
 :
     NOP
     DEY
@@ -6817,7 +6817,7 @@ World_FillHearts:
     CMP #$F8
     BCS @CompleteHeart          ; If HeartPartial >= $F8, go complete a heart.
     CLC                         ; else add 6.
-    ADC #$06
+    ADC NTSCPAL #$06, #$09
     STA HeartPartial
     RTS
 

@@ -5984,10 +5984,18 @@ CheckPowerTriforceFanfarePatch:
 
     ; Nintendo header
     .BYTE "ZELDA" ; Title
+.IFNDEF PAL
 .IFNDEF REV1
     .WORD $C8D7   ; PRG Checksum
 .ELSE
     .WORD $76E0   ; PRG Checksum
+.ENDIF
+.ELSE
+.IFNDEF REV1
+    .WORD $E6DF   ; PRG Checksum
+.ELSE
+    .WORD $61E0   ; PRG Checksum
+.ENDIF
 .ENDIF
     .WORD $0000   ; CHR Checksum
     .BYTE $38     ; PRG: 128K ROM, CHR: 8K RAM

@@ -1,3 +1,11 @@
+.IF .DEF(ZELDAVC) .AND (.NOT .DEF(ZELDACE))
+    ZELDACE = 0
+.ENDIF
+.IFNDEF PAL
+	.DEFINE NTSCPAL(n,p) n
+.ELSE
+	.DEFINE NTSCPAL(n,p) p
+.ENDIF
 CurLevel := $10
 IsUpdatingMode := $11
 GameMode := $12

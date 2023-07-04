@@ -3416,7 +3416,7 @@ PondFairy_HandleOtherStates:
     ; and set Link's object timer to $50, to keep showing hearts
     ; a little while after we finish filling hearts.
     INC ObjState+1
-    LDA #$50
+    LDA NTSCPAL #$50, #$47
     STA ObjTimer+1
 
 @CheckState2:

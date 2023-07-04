@@ -583,7 +583,7 @@ UpdatePersonState_Textbox:
 
     ; Set the timer to wait 6 frames after the next character about
     ; to be shown.
-    LDA #$06
+    LDA NTSCPAL #$06, #$04
     STA ObjTimer+1
 
     ; Copy the 5 bytes of the textbox character transfer record template
@@ -4421,7 +4421,7 @@ TryTakeItem:
     ;
     ; [03A8][X] is used to count down the life of the item.
     LDA Item_ObjItemLifetime, X
-    CMP #$F0
+    CMP NTSCPAL #$F0, #$F4
     BCS L6C28_Exit
 
     ; If Y distance between Link and the item >= 9, return.
@@ -4476,7 +4476,7 @@ TakeItem:
     LDX GameMode
     CPX #$05
     BEQ @SkipLift
-    LDX #$80                    ; Lift for $80 frames.
+    LDX NTSCPAL #$80, #$6C      ; Lift for $80 frames.
     STX ItemLiftTimer
     LDX #$08                    ; Play the "item" song.
     STX SongRequest

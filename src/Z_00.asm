@@ -5,6 +5,9 @@
 
 .EXPORT DriveAudio
 
+.IFNDEF PAL
+    .RES $60
+.ENDIF
 
 SongTable:
     .BYTE $7D, $B5, $6E, $67, $7D, $AD, $64, $64
@@ -28,53 +31,72 @@ SongTable:
 ; Note that the last byte of the "Item taken" header overlaps
 ; "End level", and "End level" overlaps "Overworld".
 ;
+.MACRO SongHeader arg1, arg2, arg3, arg4, arg5, arg6, arg7
+    .BYTE arg1
+    .WORD arg2
+    .IFNBLANK arg3
+        .BYTE arg3, arg4, arg5, arg6
+        .IFNBLANK arg7
+            .BYTE arg7
+        .ENDIF
+    .ENDIF
+.ENDMACRO
+
 SongHeaderDemo0:
-    .BYTE $20, $8B, $94, $3B, $1D, $4F, $80, $01
-    .BYTE $20, $DC, $94, $27, $57, $23, $01, $80
-    .BYTE $20, $A1, $95, $38, $17, $B8, $80, $80
-    .BYTE $20, $F1, $95, $6C, $26, $68, $80, $80
-    .BYTE $20, $8D, $96, $3E, $25, $21, $80, $80
-    .BYTE $20, $EB, $96, $19, $0D, $31, $80, $80
-    .BYTE $20, $20, $97, $3F, $27, $7C, $80, $80
-    .BYTE $20, $8F, $97, $1D, $11, $0D, $80, $80
+    SongHeader $20, SongScriptDemo0,           $3B, $1D, $4F, $80, $01
+    SongHeader $20, SongScriptDemo0+$51,       $27, $57, $23, $01, $80
+    SongHeader $20, SongScriptDemo0+$116,      $38, $17, $B8, $80, $80
+    SongHeader $20, SongScriptDemo0+$166,      $6C, $26, $68, $80, $80
+    SongHeader $20, SongScriptDemo0+$202,      $3E, $25, $21, $80, $80
+    SongHeader $20, SongScriptDemo0+$260,      $19, $0D, $31, $80, $80
+    SongHeader $20, SongScriptDemo0+$295,      $3F, $27, $7C, $80, $80
+    SongHeader $20, SongScriptDemo0+$304,      $1D, $11, $0D, $80, $80
 
 ; Unknown block
-    .BYTE $10, $A1, $8E
+    SongHeader $10, SongScriptOverworld0+NTSCPAL $31, $38
 
 SongHeaderItemTaken0:
-    .BYTE $10, $5D, $8E, $0D, $07, $00, $80
+    SongHeader NTSCPAL $10, $18, SongScriptItemTaken0,      $0D, $07, $00, $80
 
 SongHeaderEndLevel0:
-    .BYTE $10, $A4, $91, $46, $22, $00, $80
+    SongHeader $10, SongScriptEndLevel0,       NTSCPAL $46, $4A, NTSCPAL $22, $24, $00, $80
 
 SongHeaderOverworld0:
-    .BYTE $10, $70, $8E, $32, $5D, $8E, $01, $80
-    .BYTE $10, $0F, $8F, $35, $16, $CE, $01, $80
-    .BYTE $10, $55, $8F, $60, $26, $88, $01, $80
-    .BYTE $10, $32, $90, $59, $2D, $A4, $01, $80
-    .BYTE $10, $E4, $8F, $3B, $1A, $F2, $01, $80
+.IFNDEF PAL
+    SongHeader $10, SongScriptOverworld0,      $32, $5D, $8E, $01, $80
+    SongHeader $10, SongScriptOverworld0+$9F,  $35, $16, $CE, $01, $80
+    SongHeader $10, SongScriptOverworld0+$E5,  $60, $26, $88, $01, $80
+    SongHeader $10, SongScriptOverworld0+$1C2, $59, $2D, $A4, $01, $80
+    SongHeader $10, SongScriptOverworld0+$174, $3B, $1A, $F2, $01, $80
+.ELSE
+    SongHeader $10, SongScriptOverworld0,      $39, $6A, $A2, $01, $80
+    SongHeader $10, SongScriptOverworld0+$B3,  $36, $17, $DE, $01, $80
+    SongHeader $10, SongScriptOverworld0+$FC,  $67, $28, $95, $01, $80
+    SongHeader $10, SongScriptOverworld0+$1EF, $59, $2D, $AE, $01, $80
+    SongHeader $10, SongScriptOverworld0+$198, $3B, $1A, $50, $01, $80
+.ENDIF
 
 SongHeaderUnderworld0:
-    .BYTE $00, $DD, $90, $45, $22, $00, $01, $01
-    .BYTE $00, $3A, $91, $39, $1C, $00, $01, $01
+    SongHeader $00, SongScriptUnderworld0,     $45, $22, $00, $01, $01
+    SongHeader $00, SongScriptUnderworld0+$5D, $39, $1C, $00, $01, $01
 
 SongHeaderLastLevel0:
-    .BYTE $10, $FD, $91, $A5, $53, $CD, $80, $80
+    SongHeader NTSCPAL $10, $18, SongScriptLastLevel0,      $A5, $53, $CD, $80, $80
 
 SongHeaderGanon0:
-    .BYTE $10, $CC, $92, $22, $10, $00, $80, $01
+    SongHeader NTSCPAL $10, $18, SongScriptGanon0,          $22, $10, $00, $80, $01
 
 SongHeaderEnding0:
-    .BYTE $08, $F7, $92, $22, $50, $59, $01, $80
-    .BYTE $08, $F7, $92, $2F, $50, $59, $01, $80
-    .BYTE $08, $52, $93, $7A, $1B, $C2, $80, $80
-    .BYTE $08, $86, $93, $46, $24, $8E, $01, $80
-    .BYTE $08, $9D, $93, $44, $23, $77, $01, $80
-    .BYTE $08, $ED, $93, $1B, $0E, $27, $01, $80
-    .BYTE $08, $1A, $94, $40, $1A, $6B, $80, $80
+    SongHeader $08, SongScriptEnding0,         $22, $50, $59, $01, $80
+    SongHeader $08, SongScriptEnding0,         $2F, $50, $59, $01, $80
+    SongHeader $08, SongScriptEnding0+$5B,     $7A, $1B, $C2, $80, $80
+    SongHeader $08, SongScriptEnding0+$8F,     $46, $24, $8E, $01, $80
+    SongHeader $08, SongScriptEnding0+$A6,     $44, $23, $77, $01, $80
+    SongHeader $08, SongScriptEnding0+$F6,     $1B, $0E, $27, $01, $80
+    SongHeader $08, SongScriptEnding0+$123,    $40, $1A, $6B, $80, $80
 
 SongHeaderZelda:
-    .BYTE $10, $C4, $97, $3F, $20, $00, $80, $80
+    SongHeader $10, SongScriptZelda0,          NTSCPAL $3F, $43, NTSCPAL $20, $22, $00, $80, $80
 
 SongScriptItemTaken0:
     .INCBIN "dat/SongScriptItemTaken0.dat"
@@ -404,6 +426,7 @@ BombSfxNotes:
 
 TuneScripts1:
     .BYTE $0C, $08, $11, $1C, $28, $33, $40, $62
+.IFNDEF PAL
     .BYTE $8A, $4E, $58, $60, $8A, $5E, $94, $60
     .BYTE $00, $8A, $42, $06, $3C, $30, $2E, $3E
     .BYTE $44, $CC, $02, $00, $83, $40, $42, $48
@@ -412,16 +435,30 @@ TuneScripts1:
     .BYTE $CC, $4A, $00, $81, $28, $3E, $24, $82
     .BYTE $3A, $81, $16, $30, $1A, $82, $34, $00
     .BYTE $94, $56, $42, $02, $4C, $52, $42, $5C
+.ELSE
+    .BYTE $88, $4E, $58, $60, $88, $5E, $94, $60
+    .BYTE $00, $88, $42, $06, $3C, $30, $2E, $3E
+    .BYTE $44, $CA, $02, $00, $82, $40, $42, $48
+    .BYTE $4A, $02, $50, $4C, $54, $94, $56, $00
+    .BYTE $93, $3A, $3E, $A6, $50, $89, $4E, $02
+    .BYTE $CA, $4A, $00, $81, $28, $3E, $24, $82
+    .BYTE $3A, $81, $16, $30, $1A, $82, $34, $00
+    .BYTE $90, $56, $42, $02, $4C, $52, $42, $5C
+.ENDIF
     .BYTE $4A, $5A, $02, $4C, $5A, $56, $02, $50
     .BYTE $4C, $5A, $02, $54, $5A, $58, $02, $50
     .BYTE $54, $4C, $42, $02, $4C, $50, $48, $4A
     .BYTE $50, $00
+.IFNDEF PAL
 .IFNDEF REV1
-    .BYTE $8A, $08, $08
+    .BYTE $8A, $08, $08, $08, $85
 .ELSE
-    .BYTE $9E
+    .BYTE $9E, $08, $85
 .ENDIF
-    .BYTE $08, $85, $3C
+.ELSE
+    .BYTE $90, $08, $08, $84
+.ENDIF
+    .BYTE $3C
     .BYTE $3A, $38, $36, $3A, $38, $36, $34, $38
     .BYTE $36, $34, $32, $36, $34, $32, $30, $34
     .BYTE $32, $30, $2E, $2A, $28, $A8, $26, $00
@@ -527,7 +564,7 @@ DriveSample:
     DEC SampleCounter
     BNE @Exit
     LDA Sample
-.IFNDEF REV1
+.IF .NOT (.DEF(REV1) .OR .DEF(PAL))
     BMI @ChangeSampleMid
     AND #$70
     BNE @ChangeSampleLow
@@ -552,7 +589,7 @@ DriveSample:
     BEQ :+
 
 @ChangeSampleMid:
-.IFNDEF REV1
+.IF .NOT (.DEF(REV1) .OR .DEF(PAL))
     LDX #$7F
     AND #$F0
 .ELSE
@@ -787,7 +824,7 @@ PlayNextPhrase:
     LDY SongPhraseIndex
     CPY #$24
     BNE PrepPhrase
-    LDY #$19
+    LDY NTSCPAL #$19, #$1B
     BNE SetPrevPhraseIndex
 
 @PlaySinglePhraseSong:
@@ -1019,7 +1056,7 @@ ApplySq1Effects:
     ; TODO: [05F1] ?
     LDA $05F1
     BPL :+
-    LDA #$1F
+    LDA NTSCPAL #$1F, #$1C
     BNE @SetTrgLinear
 :
     LDA #$FF
@@ -1123,8 +1160,9 @@ StairsSfxNotes:
     .BYTE $0E, $0E, $4C, $6D, $8C, $CD
 
 ; Big-endian 16-bit period values.
-    .ALIGN 16   ; FIXME: actually it's page aligned
+    .ALIGN 256
 NotePeriodTable:
+.IFNDEF PAL
     .BYTE $00, $23, $00, $6A, $03, $27, $00, $97
     .BYTE $00, $00, $02, $F9, $02, $CF, $02, $A6
     .BYTE $02, $80, $02, $5C, $02, $3A, $02, $1A
@@ -1140,6 +1178,23 @@ NotePeriodTable:
     .BYTE $00, $21, $05, $4D, $05, $01, $04, $B9
     .BYTE $04, $35, $03, $F8, $03, $BF, $03, $89
     .BYTE $03, $57
+.ELSE
+    .BYTE $00, $23, $00, $62, $02, $E8, $00, $8B
+    .BYTE $00, $00, $02, $BE, $02, $98, $02, $72
+    .BYTE $02, $4F, $02, $2E, $02, $0E, $01, $F1
+    .BYTE $01, $D4, $01, $BA, $01, $A1, $01, $8A
+    .BYTE $01, $74, $01, $5F, $01, $4B, $01, $39
+    .BYTE $01, $27, $01, $17, $01, $07, $00, $F8
+    .BYTE $00, $EA, $00, $DD, $00, $D1, $00, $C5
+    .BYTE $00, $BA, $00, $AF, $00, $A5, $00, $9C
+    .BYTE $00, $94, $00, $83, $00, $7C, $00, $6E
+    .BYTE $00, $74, $00, $68, $00, $4E, $00, $5C
+    .BYTE $00, $58, $00, $52, $00, $4A, $00, $42
+    .BYTE $00, $3E, $00, $3A, $00, $34, $00, $2E
+    .BYTE $00, $1F, $04, $E4, $04, $9E, $04, $5C
+    .BYTE $03, $E2, $03, $A9, $03, $75, $03, $43
+    .BYTE $03, $15
+.ENDIF
 
 ; Returns:
 ; A: starting custom envelope offset
@@ -1193,6 +1248,7 @@ FlameSfxNotes:
     .BYTE $1A, $1A, $1C, $1D, $1D, $1E, $1E, $1F
     .BYTE $1F, $1E, $1A, $19, $16, $13, $11, $11
 
+.IFNDEF PAL
 NoteLengthTable0:
     .BYTE $03, $0A, $01, $14, $05, $28, $3C, $70
 
@@ -1207,6 +1263,22 @@ NoteLengthTable3:
 
 NoteLengthTable4:
     .BYTE $3C, $50, $0A, $05, $14, $0D, $28, $0E
+.ELSE
+NoteLengthTable0:
+    .BYTE $02, $08, $01, $10, $05, $20, $30, $40
+
+NoteLengthTable1:
+    .BYTE $04, $14, $2C, $10, $0C, $20, $30, $40
+
+NoteLengthTable2:
+    .BYTE $05, $0A, $07, $14, $1E, $28, $3C, $06
+
+NoteLengthTable3:
+    .BYTE $05, $0A, $07, $14, $1E, $28, $3C, $0D
+
+NoteLengthTable4:
+    .BYTE $30, $40, $08, $04, $10, $0B, $20, $0A
+.ENDIF
 
 .SEGMENT "BANK_00_ISR"
 .INCLUDE "Reset.inc"

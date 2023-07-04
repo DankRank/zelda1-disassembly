@@ -1,13 +1,13 @@
 <Binaries>
-  <Binary Offset='3677' Length='19' FileName='dat/SongScriptItemTaken0.dat'/>
-  <Binary Offset='3696' Length='621' FileName='dat/SongScriptOverworld0.dat'/>
-  <Binary Offset='4317' Length='199' FileName='dat/SongScriptUnderworld0.dat'/>
-  <Binary Offset='4516' Length='89' FileName='dat/SongScriptEndLevel0.dat'/>
-  <Binary Offset='4605' Length='207' FileName='dat/SongScriptLastLevel0.dat'/>
-  <Binary Offset='4812' Length='43' FileName='dat/SongScriptGanon0.dat'/>
-  <Binary Offset='4855' Length='404' FileName='dat/SongScriptEnding0.dat'/>
-  <Binary Offset='5259' Length='825' FileName='dat/SongScriptDemo0.dat'/>
-  <Binary Offset='6084' Length='97' FileName='dat/SongScriptZelda0.dat'/>
+  <Binary Offset='3677' Length='19' FileName='dat/SongScriptItemTaken0.dat' PalOffset='3581'/>
+  <Binary Offset='3696' Length='621' FileName='dat/SongScriptOverworld0.dat' PalOffset='3600' PalLength='676'/>
+  <Binary Offset='4317' Length='199' FileName='dat/SongScriptUnderworld0.dat' PalOffset='4276'/>
+  <Binary Offset='4516' Length='89' FileName='dat/SongScriptEndLevel0.dat' PalOffset='4475' PalLength='93'/>
+  <Binary Offset='4605' Length='207' FileName='dat/SongScriptLastLevel0.dat' PalOffset='4568'/>
+  <Binary Offset='4812' Length='43' FileName='dat/SongScriptGanon0.dat' PalOffset='4775'/>
+  <Binary Offset='4855' Length='404' FileName='dat/SongScriptEnding0.dat' PalOffset='4818'/>
+  <Binary Offset='5259' Length='825' FileName='dat/SongScriptDemo0.dat' PalOffset='5222'/>
+  <Binary Offset='6084' Length='97' FileName='dat/SongScriptZelda0.dat' PalOffset='6047' PalLength='113'/>
   <Binary Offset='16460' Length='1366' FileName='dat/PersonText.dat'/>
   <Binary Offset='19892' Length='2304' FileName='dat/DemoSpritePatterns.dat'/>
   <Binary Offset='22196' Length='2080' FileName='dat/DemoBackgroundPatterns.dat'/>

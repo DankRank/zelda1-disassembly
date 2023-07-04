@@ -366,7 +366,7 @@ InitialTitleSprites:
     .BYTE $57, $CE, $02, $74, $57, $D0, $02, $7C
     .BYTE $31, $D2, $02, $57, $4F, $D2, $02, $CC
     .BYTE $67, $D2, $02, $7B
-.IFNDEF ZELDACE
+.IF (.NOT .DEF(ZELDACE)) .OR .DEF(PAL)
     .BYTE $83, $D2, $02, $50
 .ELSE
     .BYTE $81, $D4, $02, $67
@@ -991,7 +991,7 @@ AnimateDemoPhase1Subphase3:
 AnimateDemoPhase1Subphase4:
     INC DemoTimer               ; Delay 56 frames.
     LDA DemoTimer
-    CMP #$39
+    CMP NTSCPAL #$39, #$78
     BNE AnimateDemoPhase1End_AnimateObjects
     LDA #$00                    ; Go to phase 0 again, and initialize it.
     STA IsUpdatingMode
@@ -3578,7 +3578,7 @@ PeaceText:
     .BYTE $19, $0E, $0A, $0C, $0E, $24, $1B, $0E
     .BYTE $1D, $1E, $1B, $17, $1C, $24, $1D, $18
     .BYTE $24, $11, $22, $1B, $1E, $15, $0E, $2C
-.IFNDEF ZELDACE
+.IF (.NOT .DEF(ZELDACE)) .OR .DEF(PAL)
     ; THIS ENDS THE STORY.
     .BYTE $1D, $11, $12, $1C, $24, $0E, $17, $0D
     .BYTE $1C, $24, $1D, $11, $0E, $24, $1C, $1D
