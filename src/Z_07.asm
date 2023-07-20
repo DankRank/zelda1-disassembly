@@ -485,9 +485,9 @@ IsrNmi:
     LDA MenuState
     ORA Paused
     BNE @CheckInput
-    LDX #$26                    ; Advance the stun cycle.
-    LDA #$3C
-    LDY #$4E
+    LDX #LongTimerCycle         ; Advance the long timer cycle.
+    LDA #LastShortTimer
+    LDY #LastLongTimer
     STX $00
     DEC $00, X
     BPL @DecTimers
@@ -496,7 +496,7 @@ IsrNmi:
     TYA
 
 @DecTimers:
-    TAX                         ; Decrement timers (object and optionally stun timers).
+    TAX                         ; Decrement timers (object and optionally long timers).
 
 @LoopTimer:
     LDA $00, X

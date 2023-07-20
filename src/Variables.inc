@@ -14,15 +14,19 @@ TileBufSelector := $14
 FrameCounter := $15
 CurSaveSlot := $16
 Random := $18
-StunCycle := $26
+
+LongTimerCycle := $26
 DoorTimer := $27
 ObjTimer := $28
 FluteTimer := $3C
+LastShortTimer := $3C
 ObjStunTimer := $3D
 ChaseLongTimer := $4A
 MonstersFromEdgesLongTimer := $4B
 SwordBlockedLongTimer := $4C
 RedLeeverLongTimer := $4D
+LastLongTimer := $4E
+
 HelpDropCount := $50
 HelpDropValue := $51
 ProcessedNarrowObj := $52
